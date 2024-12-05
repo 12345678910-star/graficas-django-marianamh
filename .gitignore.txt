@@ -1,0 +1,20 @@
+# Archivos de sistema
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+
+# Entorno virtual
+env/
+venv/
+*.env
+
+# Archivos estáticos generados
+static/
+
+# Archivos de migración (opcionales)
+*/migrations/*
+
+# Configuración local
+*.sqlite3

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Mi Sitio de Gráficas</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Este estilo organiza todas las gráficas juntas como un mosaico */
+        .contenedor {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        /* Aquí ajustamos cómo se ven las gráficas */
+        .grafica {
+            flex: 1 1 calc(33% - 20px); /* Tres columnas */
+            max-width: 30%;
+            text-align: center;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Para que la gráfica de pastel no se vea gigante */
+        #graficaPastel {
+            display: block;
+            margin: 0 auto;
+            max-width: 300px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Proyecto gráficas en Django</h1>
+    <p>Aquí mostramos varias gráficas usando Chart.js</p>
+    <p>-</p>
+    <p>Materia : Estructura de Datos</p>
+    <p>Alumna : Mariana Manzo Hernández </p>
+
+    <!-- Aquí van todas las gráficas juntas -->
+    <div class="contenedor">
+        <!-- Gráfica de Líneas -->
+        <div class="grafica">
+            <h2>Gráfica de Líneas</h2>
+            <canvas id="graficaLineas"></canvas>
+        </div>
+        <!-- Gráfica de Barras -->
+        <div class="grafica">
+            <h2>Gráfica de Barras</h2>
+            <canvas id="graficaBarras"></canvas>
+        </div>
+        <!-- Gráfica de Dispersión -->
+        <div class="grafica">
+            <h2>Gráfica de Dispersión</h2>
+            <canvas id="graficaDispersion"></canvas>
+        </div>
+        <!-- Gráfica de Pastel -->
+        <div class="grafica">
+            <h2>Gráfica de Pastel</h2>
+            <canvas id="graficaPastel"></canvas>
+        </div>
+        <!-- Histograma -->
+        <div class="grafica">
+            <h2>Histograma</h2>
+            <canvas id="graficaHistograma"></canvas>
+        </div>
+        <!-- Gráfica de Cajas -->
+        <div class="grafica">
+            <h2>Gráfica de Cajas</h2>
+            <canvas id="graficaCajas"></canvas>
+        </div>
+    </div>
+
+    <!-- Aquí se escriben los scripts para que las gráficas funcionen -->
+    <script>
+    // Traemos los datos desde Python para usarlos en las gráficas
+    const diasPorMes = {{ dias_por_mes|safe }};
+    const meses = {{ meses|safe }}; 
+
+        // Esta es la gráfica de líneas, muestra cómo varían los días por mes
+        new Chart(document.getElementById('graficaLineas').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Días por mes',
+                    data: diasPorMes,
+                    borderColor: 'azul',
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Gráfica de barras, muestra lo mismo que la de líneas pero con barras
+        new Chart(document.getElementById('graficaBarras').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Días por mes',
+                    data: diasPorMes,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Gráfica de dispersión, los puntos muestran días por mes como coordenadas
+        new Chart(document.getElementById('graficaDispersion').getContext('2d'), {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Días por mes',
+                    data: diasPorMes.map((y, indice) => ({ x: indice + 1, y })),
+                    backgroundColor: 'rojo'
+                }]
+            },
+            options: {
+                scales: {
+                    x: { beginAtZero: true, title: { display: true, text: 'Mes' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Días' } }
+                }
+            }
+        });
+
+        // Gráfica de pastel, muestra qué tan grande es cada mes respecto a los demás
+        new Chart(document.getElementById('graficaPastel').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: meses,
+                datasets: [{
+                    data: diasPorMes,
+                    backgroundColor: meses.map((_, i) => `hsl(${i * 30}, 70%, 70%)`)
+                }]
+            }
+        });
+
+        // Histograma, otra forma de ver la frecuencia de los días por mes
+        new Chart(document.getElementById('graficaHistograma').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Frecuencia (días por mes)',
+                    data: diasPorMes,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)'
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // Gráfica de cajas, para mostrar datos resumidos del año
+        new Chart(document.getElementById('graficaCajas').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mínimo', 'Q1', 'Mediana', 'Q3', 'Máximo'],
+                datasets: [{
+                    label: 'Distribución',
+                    data: [28, 30, 30.5, 31, 31],
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)'
+                }]
+            },
+            options: {
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+</body>
+</html>
