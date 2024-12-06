@@ -1,10 +1,10 @@
-Proyecto Django con Gráficas Dinámicas
-Materia : Estructura de Datos
-Alumna : Mariana Manzo Hernández
-Matricula : 20619254
-Fecha de entrega : 5 de diciembre de 2024
-Profesor : José Luis Robles Bárcenas 
-Grupo : SC05T
+Proyecto Django con Gráficas Dinámicas.
+Materia : Estructura de Datos.
+Alumna : Mariana Manzo Hernández.
+Matricula : 20619254.
+Fecha de entrega : 5 de diciembre de 2024.
+Profesor : José Luis Robles Bárcenas. 
+Grupo : SC05T.
 
 
 Este proyecto permite visualizar gráficas dinámicas utilizando Django y Chart.js.
